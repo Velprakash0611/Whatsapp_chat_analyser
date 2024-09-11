@@ -1,4 +1,4 @@
-#WhatsApp Chat Analyzer
+#WhatsApp Chat Analyzer#
 
 - This Streamlit application provides insightful analysis of WhatsApp chat data. It visualizes chat metrics like message frequency, emoji usage, and user activity, making it easy to analyze large conversations.
 
