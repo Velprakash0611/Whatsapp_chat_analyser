@@ -39,7 +39,7 @@ def most_busy_user(df):
 
 
 def create_wordcloud(sel_user, df):
-    f=open("C:\\Users\\velpr\\OneDrive\\Documents\\ml projects\\whatsapp chat analyser\\stop_hinglish.txt",'r')
+    f=open('stop_hinglish.txt','r')
     stop_words = f.read()
 
 
