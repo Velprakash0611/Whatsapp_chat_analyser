@@ -12,154 +12,170 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Sidebar: Theme Toggle
-st.sidebar.markdown("### Display Settings")
-theme_mode = st.sidebar.radio(
-    "Interface Theme",
-    options=["Dark Mode", "Light Mode"],
-    index=0,
-    horizontal=True
-)
-is_dark = (theme_mode == "Dark Mode")
-
-# CSS Variables and Animations
-if is_dark:
-    bg_main = "#0b0f19"
-    bg_sidebar = "#111827"
-    card_bg = "#1f2937"
-    border_color = "#374151"
-    text_primary = "#f9fafb"
-    text_secondary = "#9ca3af"
-    accent_color = "#38bdf8"
-    accent_hover = "#0284c7"
-else:
-    bg_main = "#f8fafc"
-    bg_sidebar = "#ffffff"
-    card_bg = "#ffffff"
-    border_color = "#e2e8f0"
-    text_primary = "#0f172a"
-    text_secondary = "#64748b"
-    accent_color = "#2563eb"
-    accent_hover = "#1d4ed8"
-
-custom_css = f"""
+# Custom CSS leveraging Streamlit native theme variables
+custom_css = """
 <style>
-    /* Main Layout */
-    .stApp {{
-        background-color: {bg_main};
-        color: {text_primary};
-        transition: background-color 0.4s ease, color 0.4s ease;
-    }}
-    
-    [data-testid="stSidebar"] {{
-        background-color: {bg_sidebar};
-        border-right: 1px solid {border_color};
-    }}
-
-    /* Fade-in Animation */
-    @keyframes fadeInUp {{
-        from {{
+    /* Keyframe Animations */
+    @keyframes fadeInUp {
+        from {
             opacity: 0;
-            transform: translateY(12px);
-        }}
-        to {{
+            transform: translateY(14px);
+        }
+        to {
             opacity: 1;
             transform: translateY(0);
-        }}
-    }}
+        }
+    }
 
-    /* Keyframe Shimmer */
-    @keyframes shimmer {{
-        0% {{ border-color: {border_color}; }}
-        50% {{ border-color: {accent_color}; }}
-        100% {{ border-color: {border_color}; }}
-    }}
+    @keyframes pulseGlow {
+        0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.2); }
+        70% { box-shadow: 0 0 0 10px rgba(37, 99, 235, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+    }
 
-    /* Card Styling */
-    .custom-card {{
-        background-color: {card_bg};
-        border: 1px solid {border_color};
-        border-radius: 12px;
-        padding: 20px 24px;
-        margin-bottom: 16px;
+    /* Modern Card Container */
+    .custom-card {
+        background-color: var(--secondary-background-color);
+        border: 1px solid rgba(128, 128, 128, 0.18);
+        border-radius: 14px;
+        padding: 22px 24px;
+        margin-bottom: 18px;
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
         animation: fadeInUp 0.4s ease-out;
         transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-    }}
+    }
 
-    .custom-card:hover {{
+    .custom-card:hover {
         transform: translateY(-3px);
-        border-color: {accent_color};
-        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09);
-    }}
+        border-color: var(--primary-color);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+    }
 
-    .card-title {{
-        font-size: 0.82rem;
+    .card-title {
+        font-size: 0.8rem;
         font-weight: 600;
         text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: {text_secondary};
+        letter-spacing: 0.06em;
+        opacity: 0.75;
         margin-bottom: 6px;
-    }}
+    }
 
-    .card-value {{
+    .card-value {
         font-size: 1.85rem;
-        font-weight: 700;
-        color: {text_primary};
-        line-height: 1.2;
-    }}
-
-    /* Button Styling */
-    .stButton > button {{
-        width: 100%;
-        border-radius: 8px;
-        font-weight: 600;
-        padding: 0.55rem 1rem;
-        transition: all 0.25s ease;
-        border: 1px solid {border_color};
-    }}
-
-    .stButton > button:hover {{
-        border-color: {accent_color};
-        color: {accent_color};
-        transform: translateY(-1px);
-    }}
-
-    /* Header styling */
-    .main-title {{
-        font-size: 2.1rem;
         font-weight: 800;
-        letter-spacing: -0.025em;
-        color: {text_primary};
-        margin-bottom: 0.3rem;
-        animation: fadeInUp 0.3s ease-out;
-    }}
+        line-height: 1.2;
+    }
 
-    .sub-title {{
-        font-size: 0.95rem;
-        color: {text_secondary};
-        margin-bottom: 1.5rem;
-        animation: fadeInUp 0.4s ease-out;
-    }}
+    /* Hero Styling */
+    .hero-badge {
+        display: inline-block;
+        padding: 5px 14px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        border-radius: 20px;
+        background-color: rgba(37, 99, 235, 0.12);
+        color: var(--primary-color);
+        margin-bottom: 12px;
+        border: 1px solid rgba(37, 99, 235, 0.25);
+    }
 
-    /* Tabs styling */
-    .stTabs [data-baseweb="tab-list"] {{
+    .hero-title {
+        font-size: 2.35rem;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+        font-size: 1.05rem;
+        opacity: 0.82;
+        max-width: 780px;
+        margin-bottom: 24px;
+        line-height: 1.55;
+    }
+
+    /* Feature Grid Card */
+    .feature-card {
+        background-color: var(--secondary-background-color);
+        border: 1px solid rgba(128, 128, 128, 0.16);
+        border-radius: 12px;
+        padding: 20px 22px;
+        height: 100%;
+        animation: fadeInUp 0.5s ease-out;
+        transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--primary-color);
+    }
+
+    .feature-tag {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--primary-color);
+        margin-bottom: 6px;
+    }
+
+    .feature-heading {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .feature-desc {
+        font-size: 0.88rem;
+        opacity: 0.8;
+        line-height: 1.5;
+    }
+
+    /* Workflow Step */
+    .step-badge {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background-color: var(--primary-color);
+        color: #ffffff;
+        font-weight: 700;
+        font-size: 0.85rem;
+        margin-bottom: 10px;
+    }
+
+    /* General Button Polish */
+    .stButton > button {
+        border-radius: 9px;
+        font-weight: 600;
+        padding: 0.55rem 1.1rem;
+        transition: all 0.25s ease;
+    }
+
+    .stButton > button:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Tab Polish */
+    .stTabs [data-baseweb="tab-list"] {
         gap: 8px;
-    }}
+    }
 
-    .stTabs [data-baseweb="tab"] {{
-        border-radius: 6px;
-        padding: 8px 16px;
-        font-weight: 500;
+    .stTabs [data-baseweb="tab"] {
+        border-radius: 8px;
+        padding: 8px 18px;
+        font-weight: 600;
         transition: all 0.2s ease;
-    }}
+    }
 </style>
 """
 st.markdown(custom_css, unsafe_allow_html=True)
-
-# Application Header
-st.markdown('<div class="main-title">WhatsApp Chat Intelligence</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Advanced behavioral, temporal, and sentiment analysis for exported conversations</div>', unsafe_allow_html=True)
 
 # Caching Preprocessing Function
 @st.cache_data(show_spinner="Parsing and structuring conversation data...")
@@ -170,16 +186,16 @@ def load_and_preprocess(raw_text: str):
 st.sidebar.markdown("### Conversation Source")
 
 uploaded_file = st.sidebar.file_uploader(
-    "Upload exported chat file (.txt)",
+    "Upload chat export (.txt)",
     type=["txt"],
-    help="Export chat from WhatsApp without media, then upload the generated .txt file."
+    help="Export chat from WhatsApp without media, then select the resulting .txt file."
 )
 
 sample_file_path = os.path.join(os.path.dirname(__file__), "MSEC AI&DS-4th-YEAR-2021-2025.txt")
-load_sample = False
+has_sample = os.path.exists(sample_file_path)
 
-if os.path.exists(sample_file_path):
-    if st.sidebar.button("Load Sample Conversation"):
+if has_sample:
+    if st.sidebar.button("Load Sample Conversation", key="sidebar_sample_btn"):
         st.session_state["use_sample"] = True
         st.session_state["uploaded_filename"] = "MSEC AI&DS-4th-YEAR-2021-2025.txt"
 
@@ -192,11 +208,11 @@ raw_data = None
 if uploaded_file is not None and not st.session_state.get("use_sample", False):
     bytes_data = uploaded_file.getvalue()
     raw_data = bytes_data.decode("utf-8", errors="ignore")
-elif st.session_state.get("use_sample", False) and os.path.exists(sample_file_path):
+elif st.session_state.get("use_sample", False) and has_sample:
     with open(sample_file_path, "r", encoding="utf-8", errors="ignore") as f:
         raw_data = f.read()
 
-# Main Logic when data is loaded
+# Main Flow
 if raw_data:
     df = load_and_preprocess(raw_data)
 
@@ -233,6 +249,12 @@ if raw_data:
     if df_filtered.empty:
         st.warning("No messages found within the selected date interval.")
         st.stop()
+
+    # Application Header
+    st.markdown('<div class="hero-title">WhatsApp Chat Intelligence</div>', unsafe_allow_html=True)
+    active_label = f"Displaying records for: **{selected_user}**"
+    date_label = f"({min_date.strftime('%b %d, %Y')} to {max_date.strftime('%b %d, %Y')})"
+    st.caption(f"{active_label} {date_label}")
 
     # Calculate High-Level Metrics
     num_messages, words, num_media, links, active_days = helper.fetch_stats(selected_user, df_filtered)
@@ -286,7 +308,7 @@ if raw_data:
     # Organized Tabbed Interface
     tab_timelines, tab_heatmaps, tab_users, tab_words, tab_emojis, tab_sentiment, tab_explorer = st.tabs([
         "Timelines",
-        "Activity Heatmap",
+        "Activity Heatmap & 3D",
         "Participants",
         "Vocabulary",
         "Emoji Usage",
@@ -301,7 +323,7 @@ if raw_data:
 
         with col_t1:
             monthly_df = helper.monthly_timeline(selected_user, df_filtered)
-            fig_month = helper.plot_monthly_timeline(monthly_df, is_dark=is_dark)
+            fig_month = helper.plot_monthly_timeline(monthly_df)
             if fig_month:
                 st.plotly_chart(fig_month, use_container_width=True)
             else:
@@ -309,7 +331,7 @@ if raw_data:
 
         with col_t2:
             daily_df = helper.daily_timeline(selected_user, df_filtered)
-            fig_daily = helper.plot_daily_timeline(daily_df, is_dark=is_dark)
+            fig_daily = helper.plot_daily_timeline(daily_df)
             if fig_daily:
                 st.plotly_chart(fig_daily, use_container_width=True)
             else:
@@ -317,48 +339,48 @@ if raw_data:
 
         # Cumulative Growth Curve
         st.markdown("#### Cumulative Message Growth")
-        fig_growth = helper.plot_cumulative_growth(selected_user, df_filtered, is_dark=is_dark)
+        fig_growth = helper.plot_cumulative_growth(selected_user, df_filtered)
         if fig_growth:
             st.plotly_chart(fig_growth, use_container_width=True)
 
     # Tab 2: Activity Heatmap & 3D Landscape
     with tab_heatmaps:
-        st.subheader("Activity Distribution & Patterns")
+        st.subheader("Activity Distribution & Temporal Rhythms")
         col_h1, col_h2 = st.columns([1, 2])
 
         with col_h1:
             week_df = helper.week_activity(selected_user, df_filtered)
-            fig_week = helper.plot_week_activity(week_df, is_dark=is_dark)
+            fig_week = helper.plot_week_activity(week_df)
             if fig_week:
                 st.plotly_chart(fig_week, use_container_width=True)
 
         with col_h2:
             heatmap_pivot = helper.activity_heatmap(selected_user, df_filtered)
-            fig_heatmap = helper.plot_activity_heatmap(heatmap_pivot, is_dark=is_dark)
+            fig_heatmap = helper.plot_activity_heatmap(heatmap_pivot)
             if fig_heatmap:
                 st.plotly_chart(fig_heatmap, use_container_width=True)
 
         col_polar, col_3d_info = st.columns([1, 1])
         with col_polar:
             st.markdown("#### Circadian 24-Hour Clock")
-            fig_polar = helper.plot_polar_hourly_activity(selected_user, df_filtered, is_dark=is_dark)
+            fig_polar = helper.plot_polar_hourly_activity(selected_user, df_filtered)
             if fig_polar:
                 st.plotly_chart(fig_polar, use_container_width=True)
 
         with col_3d_info:
             st.markdown("#### 3D Activity Landscape Insights")
             st.markdown("""
-            The 3D surface model below visualizes conversation intensity across:
+            The 3D surface model below visualizes conversational concentration across:
             - **X-axis**: Hour of Day (00:00 to 23:00)
             - **Y-axis**: Day of the Week (Monday to Sunday)
-            - **Z-axis**: Message Volume & Intensity
+            - **Z-axis**: Message Volume Density
 
-            **Interaction**: Click and drag to rotate in 360°, scroll to zoom in/out, or double-click to reset orientation.
+            **Interactive Controls**: Click and drag to rotate in 360 degrees, scroll to zoom in/out, or double-click to reset the camera perspective.
             """)
 
         # 3D Activity Surface Plot
         st.markdown("#### 3D Conversational Volume Topology")
-        fig_3d = helper.plot_3d_activity_surface(heatmap_pivot, is_dark=is_dark)
+        fig_3d = helper.plot_3d_activity_surface(heatmap_pivot)
         if fig_3d:
             st.plotly_chart(fig_3d, use_container_width=True)
 
@@ -370,7 +392,7 @@ if raw_data:
 
             col_u1, col_u2 = st.columns([3, 2])
             with col_u1:
-                fig_users = helper.plot_busy_users(top_users, is_dark=is_dark)
+                fig_users = helper.plot_busy_users(top_users)
                 if fig_users:
                     st.plotly_chart(fig_users, use_container_width=True)
             with col_u2:
@@ -383,7 +405,7 @@ if raw_data:
 
             # Participant Persona Bubble Matrix
             st.markdown("#### Participant Persona Matrix")
-            fig_personas = helper.plot_participant_personas(df_filtered, is_dark=is_dark)
+            fig_personas = helper.plot_participant_personas(df_filtered)
             if fig_personas:
                 st.plotly_chart(fig_personas, use_container_width=True)
         else:
@@ -396,16 +418,16 @@ if raw_data:
 
         with col_w1:
             st.markdown("#### Word Cloud")
-            wc_image = helper.create_wordcloud_image(selected_user, df_filtered, is_dark=is_dark)
+            wc_image = helper.create_wordcloud_image(selected_user, df_filtered)
             if wc_image:
-                st.image(wc_image.to_image(), use_column_width=True)
+                st.image(wc_image.to_image(), use_container_width=True)
             else:
                 st.info("No significant text available for word cloud generation.")
 
         with col_w2:
             st.markdown("#### High-Frequency Words")
             common_words_df = helper.most_common_words(selected_user, df_filtered, top_n=15)
-            fig_words = helper.plot_most_common_words(common_words_df, is_dark=is_dark)
+            fig_words = helper.plot_most_common_words(common_words_df)
             if fig_words:
                 st.plotly_chart(fig_words, use_container_width=True)
             else:
@@ -422,7 +444,7 @@ if raw_data:
                 st.markdown("#### Frequency Table")
                 st.dataframe(emoji_df, use_container_width=True, height=380)
             with col_e2:
-                fig_emoji = helper.plot_emoji_distribution(emoji_df, is_dark=is_dark, top_n=10)
+                fig_emoji = helper.plot_emoji_distribution(emoji_df, top_n=10)
                 if fig_emoji:
                     st.plotly_chart(fig_emoji, use_container_width=True)
         else:
@@ -437,7 +459,7 @@ if raw_data:
             col_s1, col_s2 = st.columns([2, 3])
 
             with col_s1:
-                fig_donut = helper.plot_sentiment_donut(summary_sent, is_dark=is_dark)
+                fig_donut = helper.plot_sentiment_donut(summary_sent)
                 if fig_donut:
                     st.plotly_chart(fig_donut, use_container_width=True)
 
@@ -461,7 +483,7 @@ if raw_data:
 
             # Sentiment Polarity Trendline
             st.markdown("#### Sentiment Trend Over Time")
-            fig_sent_trend = helper.plot_sentiment_trend(scored_msgs, is_dark=is_dark)
+            fig_sent_trend = helper.plot_sentiment_trend(scored_msgs)
             if fig_sent_trend:
                 st.plotly_chart(fig_sent_trend, use_container_width=True)
         else:
@@ -495,18 +517,153 @@ if raw_data:
         )
 
 else:
-    # Empty State Hero Section
+    # Rich Modern Landing Experience
     st.markdown("""
-    <div class="custom-card" style="text-align: center; padding: 60px 30px; margin-top: 30px;">
-        <h2 style="font-weight: 700; margin-bottom: 12px;">Get Started with Chat Analysis</h2>
-        <p style="max-width: 600px; margin: 0 auto 24px auto; font-size: 1.05rem; opacity: 0.85;">
-            Upload an exported WhatsApp chat text file (.txt) using the sidebar, or click the button below to test immediately with the sample dataset.
-        </p>
+    <div style="text-align: center; padding: 25px 15px 35px 15px;">
+        <span class="hero-badge">Conversational Intelligence Platform</span>
+        <div class="hero-title">Turn WhatsApp Chat Logs into Deep Analytics</div>
+        <div class="hero-subtitle" style="margin: 0 auto 30px auto;">
+            Uncover behavioral patterns, 24-hour circadian rhythms, 3D conversational volume topologies,
+            sentiment shifts, and participant personas in minutes.
+        </div>
     </div>
     """, unsafe_allow_html=True)
 
-    col_btn1, col_btn2, col_btn3 = st.columns([1, 1, 1])
-    with col_btn2:
-        if st.button("Load Sample Conversation", key="hero_sample_btn"):
-            st.session_state["use_sample"] = True
+    # Action Cards: Upload & Sample Demo
+    col_upload, col_sample = st.columns(2)
+
+    with col_upload:
+        st.markdown("""
+        <div class="custom-card" style="height: 100%;">
+            <div class="card-title">Analyze Your Chat</div>
+            <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">Upload Exported Text File</h3>
+            <p style="font-size: 0.92rem; opacity: 0.8; margin-bottom: 16px;">
+                Upload a <code>.txt</code> chat export from Android or iOS without media. All parsing happens 100% locally on your machine.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        main_upload = st.file_uploader(
+            "Choose a WhatsApp chat .txt file",
+            type=["txt"],
+            key="main_page_uploader",
+            label_visibility="collapsed"
+        )
+        if main_upload is not None:
+            st.session_state["use_sample"] = False
+            st.session_state["uploaded_filename"] = main_upload.name
             st.rerun()
+
+    with col_sample:
+        st.markdown("""
+        <div class="custom-card" style="height: 100%;">
+            <div class="card-title">Instant Test Drive</div>
+            <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">Explore Sample Dataset</h3>
+            <p style="font-size: 0.92rem; opacity: 0.8; margin-bottom: 16px;">
+                Experience the dashboard immediately using the included dataset: <strong>2,900+ messages</strong> across <strong>89 participants</strong> over 15 months.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        if has_sample:
+            if st.button("Launch Analysis with Sample Data", type="primary", use_container_width=True):
+                st.session_state["use_sample"] = True
+                st.session_state["uploaded_filename"] = "MSEC AI&DS-4th-YEAR-2021-2025.txt"
+                st.rerun()
+        else:
+            st.info("Sample file not detected in workspace.")
+
+    st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
+
+    # Core Analytical Capabilities Showcase Grid
+    st.markdown("### Analytical Modules")
+    f1, f2, f3, f4 = st.columns(4)
+
+    with f1:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="feature-tag">Temporal & Spatial</div>
+            <div class="feature-heading">3D Volume & Circadian Clock</div>
+            <div class="feature-desc">
+                Interactive 360° volume surface mapping Day vs. Hour, paired with a 24-hour circular polar clock revealing natural conversation rhythms.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f2:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="feature-tag">Behavioral</div>
+            <div class="feature-heading">Participant Persona Matrix</div>
+            <div class="feature-desc">
+                Multi-dimensional bubble chart mapping total activity against verbosity and media habits to identify conversational archetypes.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f3:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="feature-tag">NLP & Emotion</div>
+            <div class="feature-heading">VADER Sentiment Dynamics</div>
+            <div class="feature-desc">
+                Rule-based lexicon scoring classifying positive, neutral, and negative messages, with monthly emotional trajectory line charts.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with f4:
+        st.markdown("""
+        <div class="feature-card">
+            <div class="feature-tag">Lexical & Search</div>
+            <div class="feature-heading">Word Cloud & Live Explorer</div>
+            <div class="feature-desc">
+                Stopword-filtered vocabulary rankings, top emoji frequencies, real-time message keyword search, and CSV export.
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<div style='height: 35px;'></div>", unsafe_allow_html=True)
+
+    # Workflow Steps
+    st.markdown("### How to Export Your WhatsApp Chat")
+    s1, s2, s3 = st.columns(3)
+
+    with s1:
+        st.markdown("""
+        <div class="custom-card">
+            <div class="step-badge">1</div>
+            <h4 style="font-weight: 700; margin-bottom: 6px;">Open WhatsApp</h4>
+            <p style="font-size: 0.88rem; opacity: 0.8; line-height: 1.45;">
+                Open any private or group conversation on your phone. Tap the <strong>three dots</strong> (Android) or the <strong>contact name</strong> (iOS).
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with s2:
+        st.markdown("""
+        <div class="custom-card">
+            <div class="step-badge">2</div>
+            <h4 style="font-weight: 700; margin-bottom: 6px;">Export Without Media</h4>
+            <p style="font-size: 0.88rem; opacity: 0.8; line-height: 1.45;">
+                Select <strong>More -> Export chat</strong>. Choose <strong>Without Media</strong> to generate a compact, clean <code>.txt</code> file.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with s3:
+        st.markdown("""
+        <div class="custom-card">
+            <div class="step-badge">3</div>
+            <h4 style="font-weight: 700; margin-bottom: 6px;">Upload & Analyze</h4>
+            <p style="font-size: 0.88rem; opacity: 0.8; line-height: 1.45;">
+                Upload the exported <code>.txt</code> file here or via the sidebar to instantly generate full interactive intelligence reports.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    # Privacy Assurance Banner
+    st.markdown("""
+    <div style="text-align: center; margin-top: 20px; padding: 18px 24px; border-radius: 12px; background-color: var(--secondary-background-color); border: 1px solid rgba(128, 128, 128, 0.15);">
+        <span style="font-weight: 600; font-size: 0.92rem;">Local Processing Guarantee:</span>
+        <span style="font-size: 0.9rem; opacity: 0.85;"> Your chat data never leaves your computer. All parsing, sentiment scoring, and charting occur strictly on your local machine.</span>
+    </div>
+    """, unsafe_allow_html=True)

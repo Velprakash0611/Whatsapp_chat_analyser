@@ -113,6 +113,8 @@ def plot_busy_users(top_users_df: pd.DataFrame, is_dark: bool = False):
     fig.update_layout(
         yaxis=dict(autorange="reversed"),
         margin=dict(l=20, r=20, t=50, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=380
     )
     return fig
@@ -156,6 +158,8 @@ def plot_monthly_timeline(timeline: pd.DataFrame, is_dark: bool = False):
         yaxis_title='Messages',
         template=template,
         margin=dict(l=20, r=20, t=50, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=380
     )
     return fig
@@ -192,6 +196,8 @@ def plot_daily_timeline(daily: pd.DataFrame, is_dark: bool = False):
     fig.update_traces(line_color=color, line_width=1.8)
     fig.update_layout(
         margin=dict(l=20, r=20, t=50, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=380
     )
     return fig
@@ -230,6 +236,8 @@ def plot_week_activity(week_df: pd.DataFrame, is_dark: bool = False):
     )
     fig.update_layout(
         margin=dict(l=20, r=20, t=50, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=350
     )
     return fig
@@ -277,6 +285,8 @@ def plot_activity_heatmap(pivot: pd.DataFrame, is_dark: bool = False):
     )
     fig.update_layout(
         margin=dict(l=20, r=20, t=50, b=20),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(0,0,0,0)",
         height=400,
         xaxis=dict(tickangle=-45)
     )
