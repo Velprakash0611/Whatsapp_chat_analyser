@@ -191,26 +191,12 @@ uploaded_file = st.sidebar.file_uploader(
     help="Export chat from WhatsApp without media, then select the resulting .txt file."
 )
 
-sample_file_path = os.path.join(os.path.dirname(__file__), "MSEC AI&DS-4th-YEAR-2021-2025.txt")
-has_sample = os.path.exists(sample_file_path)
-
-if has_sample:
-    if st.sidebar.button("Load Sample Conversation", key="sidebar_sample_btn"):
-        st.session_state["use_sample"] = True
-        st.session_state["uploaded_filename"] = "MSEC AI&DS-4th-YEAR-2021-2025.txt"
-
-if uploaded_file is not None:
-    st.session_state["use_sample"] = False
-    st.session_state["uploaded_filename"] = uploaded_file.name
-
 # Load Raw Content
 raw_data = None
-if uploaded_file is not None and not st.session_state.get("use_sample", False):
-    bytes_data = uploaded_file.getvalue()
+active_file = uploaded_file or st.session_state.get("main_page_uploader")
+if active_file is not None:
+    bytes_data = active_file.getvalue()
     raw_data = bytes_data.decode("utf-8", errors="ignore")
-elif st.session_state.get("use_sample", False) and has_sample:
-    with open(sample_file_path, "r", encoding="utf-8", errors="ignore") as f:
-        raw_data = f.read()
 
 # Main Flow
 if raw_data:
@@ -529,47 +515,26 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    # Action Cards: Upload & Sample Demo
-    col_upload, col_sample = st.columns(2)
-
-    with col_upload:
+    # Centered Main Upload Hub
+    col_l, col_center, col_r = st.columns([1, 4, 1])
+    with col_center:
         st.markdown("""
-        <div class="custom-card" style="height: 100%;">
-            <div class="card-title">Analyze Your Chat</div>
-            <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">Upload Exported Text File</h3>
-            <p style="font-size: 0.92rem; opacity: 0.8; margin-bottom: 16px;">
-                Upload a <code>.txt</code> chat export from Android or iOS without media. All parsing happens 100% locally on your machine.
+        <div class="custom-card" style="text-align: center; padding: 30px 24px 18px 24px;">
+            <div class="card-title">Conversation Ingestion</div>
+            <h3 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px;">Upload Your WhatsApp Chat Log</h3>
+            <p style="font-size: 0.94rem; opacity: 0.82; max-width: 600px; margin: 0 auto 16px auto; line-height: 1.5;">
+                Select or drag and drop your exported <code>.txt</code> file here. Supports both 12-hour and 24-hour Android formats and iOS square-bracket exports without media.
             </p>
         </div>
         """, unsafe_allow_html=True)
         main_upload = st.file_uploader(
-            "Choose a WhatsApp chat .txt file",
+            "Upload WhatsApp chat file (.txt)",
             type=["txt"],
             key="main_page_uploader",
             label_visibility="collapsed"
         )
         if main_upload is not None:
-            st.session_state["use_sample"] = False
-            st.session_state["uploaded_filename"] = main_upload.name
             st.rerun()
-
-    with col_sample:
-        st.markdown("""
-        <div class="custom-card" style="height: 100%;">
-            <div class="card-title">Instant Test Drive</div>
-            <h3 style="font-size: 1.3rem; font-weight: 700; margin-bottom: 8px;">Explore Sample Dataset</h3>
-            <p style="font-size: 0.92rem; opacity: 0.8; margin-bottom: 16px;">
-                Experience the dashboard immediately using the included dataset: <strong>2,900+ messages</strong> across <strong>89 participants</strong> over 15 months.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-        if has_sample:
-            if st.button("Launch Analysis with Sample Data", type="primary", use_container_width=True):
-                st.session_state["use_sample"] = True
-                st.session_state["uploaded_filename"] = "MSEC AI&DS-4th-YEAR-2021-2025.txt"
-                st.rerun()
-        else:
-            st.info("Sample file not detected in workspace.")
 
     st.markdown("<div style='height: 25px;'></div>", unsafe_allow_html=True)
 

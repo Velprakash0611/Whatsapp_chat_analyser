@@ -50,8 +50,7 @@ whatsapp-chat-analyser/
 ├── helper.py                   # Statistical aggregation, Plotly chart builders & NLP engine
 ├── stop_hinglish.txt           # Multilingual stop word dictionary (English & Hinglish)
 ├── requirements.txt            # Explicit dependency specifications
-├── .gitignore                  # Git exclude rules for virtual env and caches
-└── MSEC AI&DS-4th-YEAR-...txt  # Built-in sample chat dataset for immediate testing
+└── .gitignore                  # Git exclude rules for virtual env, caches & chat data
 ```
 
 ### Data Pipeline Flow
@@ -92,7 +91,7 @@ whatsapp-chat-analyser/
 - **Participant Persona Matrix**: Multi-dimensional bubble scatter plot mapping total volume against verbosity (average words per message) and media volume.
 - **VADER Sentiment Analysis**: Polarity breakdown (Positive, Neutral, Negative), sentiment ratio calculations, and monthly emotional polarity trends.
 - **Zero Interface Clutter**: Completely clean, professional typography and layout without AI-typical decorative emojis in titles, headers, and navigation tabs.
-- **Instant Testing**: One-click "Load Sample Conversation" button allows immediate exploration of all features without requiring your own chat export.
+- **Local Data Processing**: Complete privacy with all analysis and sentiment scoring performed locally on your machine.
 
 ---
 

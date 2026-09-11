@@ -4,3 +4,9 @@ __pycache__/
 .streamlit/
 .DS_Store
 
+# Exclude private WhatsApp chat exports
+MSEC AI&DS-4th-YEAR-2021-2025.txt
+WhatsApp Chat with *.txt
+*_chat.txt
+chat_export*.txt
+*.csv
